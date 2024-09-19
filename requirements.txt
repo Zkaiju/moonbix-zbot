@@ -1,2 +1,2 @@
-requests==2.26.0
-selenium==4.0.0
+telethon==1.23.0
+python-dotenv==0.19.2
