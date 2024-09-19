@@ -1,5 +1,2 @@
 requests==2.26.0
 selenium==4.0.0
-git add requirements.txt
-git commit -m "Add requirements.txt for dependencies"
-git push origin main
