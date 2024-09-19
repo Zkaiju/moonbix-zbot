@@ -1,30 +1,37 @@
-import time
-import random
+from telethon import TelegramClient
+import asyncio
+import os
+from dotenv import load_dotenv
 
-class MoonbixBot:
-    def __init__(self, min_wait=5, max_wait=15):
-        self.min_wait = min_wait
-        self.max_wait = max_wait
+# Load .env file for API credentials
+load_dotenv()
 
-    def start_farming(self):
-        print("Bot mulai farming...")
-        while True:
-            self.perform_farming_action()
-            wait_time = random.randint(self.min_wait, self.max_wait)
-            print(f"Menunggu selama {wait_time} detik sebelum farming berikutnya...")
-            time.sleep(wait_time)
+# API credentials from my.telegram.org or BotFather
+api_id = os.getenv('API_ID')
+api_hash = os.getenv('API_HASH')
+bot_token = os.getenv('BOT_TOKEN')
 
-    def perform_farming_action(self):
-        # Simulasi aksi farming (misalnya request API)
-        print("Melakukan aksi farming...")
-        # Kode aksi farming bisa dimasukkan di sini, misalnya request ke API, scraping, dll.
-        # Contoh sederhana:
-        success = random.choice([True, False])
-        if success:
-            print("Aksi farming berhasil!")
-        else:
-            print("Aksi farming gagal!")
+# Create the Telegram client
+client = TelegramClient('session_name', api_id, api_hash).start(bot_token=bot_token)
 
-if __name__ == "__main__":
-    bot = MoonbixBot(min_wait=5, max_wait=10)  # Sesuaikan waktu tunggu sesuai kebutuhan
-    bot.start_farming()
+# Function to automate farming actions
+async def auto_farm():
+    try:
+        # Start interaction with the target bot (e.g., Binance Moonbix bot)
+        await client.send_message('@Binance_Moonbix_bot', '/start')
+        print("Sent /start command to Binance Moonbix bot")
+
+        await asyncio.sleep(5)  # Wait for a few seconds before sending the next command
+
+        # Sending farming commands in a loop
+        for i in range(10):  # Repeat farming command 10 times (adjustable)
+            await client.send_message('@Binance_Moonbix_bot', '/farming')
+            print(f"Farming command #{i+1} sent")
+            await asyncio.sleep(60)  # Wait 60 seconds before sending the next command
+
+    except Exception as e:
+        print(f"Error occurred: {e}")
+
+# Run the farming bot
+with client:
+    client.loop.run_until_complete(auto_farm())
