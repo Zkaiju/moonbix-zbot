@@ -22,7 +22,4 @@ Moonbix Z-Bot is a Python bot for automated farming actions on platforms.
    pip install -r requirements.txt
 4. execute the main program:
    ```bash      
-   python bot_farming.py  
-
-
-
+   python bot_farming.py
